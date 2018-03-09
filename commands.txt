@@ -1,5 +1,5 @@
 https://www.eventbrite.com/e/chief-software-architect-100kyr-online-hiring-tournament-100-remote-registration-43700597664?aff=HTRog
-
+https://www.katacoda.com/jonatanblue/scenarios/1
 ansible_commands: 
 
 echo "[group1]" > myhosts
@@ -29,8 +29,6 @@ ansible-playbook playbooks/PLAYBOOK_NAME.yml --limit 'all:!host1'
 ansible host01 -i myhosts -m setup
 
 ---------------------------
-
-Ok. Thanks for supporting me. I am recovering very quickly. Currently I am able to work for 8 hours at a stretch And this shortage of 1 hour is not effecting my performance and project work, I am able to complete the works assigned to me on time.
 
 ---
 

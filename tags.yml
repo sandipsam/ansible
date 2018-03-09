@@ -1,0 +1,91 @@
+---
+
+- name: Play1-install apache
+
+  hosts: all
+
+  sudo: yes
+
+  tasks:
+
+    - name: install apache2
+
+      apt: name=apache2 update_cache=yes state=latest      
+
+    - name: displaying "hello world"
+
+      debug: msg="hello world"
+
+      tags: 
+
+        - tag1
+
+- name: Play2-install nginx
+
+  hosts: all
+
+  sudo: yes
+
+  tags: 
+
+    - tag2
+
+  tasks:
+
+    - name: install nginx
+
+      apt: name=nginx update_cache=yes state=latest      
+
+    - name: debug module displays message in control machine
+
+      debug: msg="have a good day"
+
+      tags: 
+
+        - mymessage
+
+    - name: shell module displays message in host machine.
+
+      shell: echo "yet another task"
+
+      tags: 
+
+        - mymessage
+...
+
+ansible-playbook -i myhosts tag.yml --list-tasks
+ansible-playbook -i myhosts tag.yml --list-tags
+ansible-playbook -i myhosts tag.yml --tags "tag1,mymessage"  //  always, untagged,tagged ///  --skip-tags
+
+
+---
+- name: Special Tags
+  hosts: all
+  sudo: yes
+  tasks:
+    - name: location 1
+      debug: msg="california"      
+
+    - name: location 2
+      debug: msg="mumbai"
+      tags: 
+        - tag1
+
+    - name: location 3
+      debug: msg="bangalore"
+      tags:
+        - tag2
+
+    - name: location 4
+      debug: msg="chennai"      
+      tags: 
+        - always
+...
+
+ansible-playbook -i myhosts tag.yml --tags "tag1"
+
+ansible-playbook -i myhosts tag.yml --tags "tagged"
+
+ansible-playbook -i myhosts tag.yml --tags "untagged"
+
+ansible-playbook -i myhosts tag.yml --tags "untagged" --skip-tags "always"
