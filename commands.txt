@@ -255,3 +255,8 @@ var_y:
 
   with_items: var_x
 --------------------------
+
+
+ansible-galaxy init sample_role
+
+------------------------------------
