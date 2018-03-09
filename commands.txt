@@ -137,3 +137,121 @@ ntp_server= example.com
 
 proxy=proxy.example.com
 ---------------------------------
+
+
+A Role has following folders:
+
+Files
+
+Handlers
+
+Meta
+
+Templates
+
+Vars
+
+Defaults
+
+
+------------------
+
+mkdir roles , cd roles , mkdir sample_role, cd sample_role, mkdir defaults files handlers tasks templates vars
+
+#file: tasks/nginx.yml
+
+---
+
+- name: Installs nginx
+
+  apt: pkg=nginx state=installed update_cache=true   
+
+  notify: 
+
+    - start nginx
+######
+
+#file: handlers/main.yml
+
+---
+
+- name: start nginx
+
+  service: name=nginx state=started
+####   Tasks, Handlers, and Vars folder always have main.yml file
+
+#file: tasks/main.yml
+
+---
+
+- include: nginx.yml
+
+- include: copy-static.yml
+
+- include: copy-template.yml
+##############
+
+#file: master_playbook.yml   -- at root folder   When you run this playbook, the Role will first check main.yml file in tasks folder and execute tasks.
+---
+
+- name: my first role in ansible
+
+  hosts: all
+
+  sudo: yes 
+
+  roles:
+
+    - sample_role
+###########
+
+
+#file: ansible.cfg
+
+[defaults]
+host_key_checking=False
+roles_path = /home/scrapbook/tutorial/roles/
+[ssh_connection]
+ssh_args =
+
+```
+# file: tasks/copy-static.yml
+
+---
+
+- name: Copy a file
+
+  copy: src=some-file.txt dest=/home/ubuntu/file1.txt
+...
+
+#Let us create a file in files folder: touch some-file.txt
+------------------------------
+#file: templates/template-file.j2
+
+this is {{item}}
+-------------------------
+
+#file: vars/main.yml
+
+var_x:
+
+  - 'variable x'
+
+var_y:
+
+  - 'variable y'
+----------------------
+#file: tasks/copy-template.yml
+
+---
+
+- name: sample template - x
+
+  template:
+
+    src: template-file.j2
+
+    dest: /home/ubuntu/copy-template-file.j2
+
+  with_items: var_x
+--------------------------
