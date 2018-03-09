@@ -1,0 +1,31 @@
+---
+- name: copy file
+ 
+  hosts: all
+  
+  tasks:
+  
+    - stat: path=/etc/somefile.conf
+
+      register: st
+
+    - template: src=somefile.j2 dest=/etc/somefile.conf
+
+      when: not st.stat.exists
+...      
+
+
+---
+- name: copy file
+
+  hosts: all
+
+  tasks:
+    - name: creating folder
+      copy:
+        src: /home/scrapbook/tutorial/afile.txt
+        dest: /home/ubuntu/afile_copy.txt
+      register: output
+
+    - debug: var=output
+...

@@ -1,0 +1,141 @@
+https://www.eventbrite.com/e/chief-software-architect-100kyr-online-hiring-tournament-100-remote-registration-43700597664?aff=HTRog
+
+ansible_commands: 
+
+echo "[group1]" > myhosts
+
+echo "host01 ansible_ssh_user=ubuntu" >> myhosts
+
+ansible-playbook -i myhosts site.yml
+
+vi file_name: edit/create a file. Press i for insert mode, Esc to come out of insert mode, :wq to save the file and exit from vi editor, :q! to exit from vi editor without saving the file.
+rm -rf dir_name: remove non-empty directory forcefully
+emacs filename.txt ---unix create file
+touch filename.txt -- linux create file
+
+-----
+cat > myfile.txt
+
+Now, just type whatever you want in the file:
+
+Hello World!
+
+CTRL-D to save and exit
+--------------
+
+ansible-playbook playbooks/PLAYBOOK_NAME.yml --limit "host1,host2"
+ansible-playbook playbooks/PLAYBOOK_NAME.yml --limit 'all:!host1'
+
+ansible host01 -i myhosts -m setup
+
+---------------------------
+
+Ok. Thanks for supporting me. I am recovering very quickly. Currently I am able to work for 8 hours at a stretch And this shortage of 1 hour is not effecting my performance and project work, I am able to complete the works assigned to me on time.
+
+---
+
+  - name: install postgre and nginx
+
+    hosts: all
+
+    sudo: true
+    
+    gather_facts: no
+
+    tasks:
+
+      - name: nginx
+
+        apt: pkg=nginx state=installed update_cache=yes cache_valid_time=604800
+
+        notify: start nginx
+
+      - name: postgresql
+
+        apt: pkg=postgresql state=installed update_cache=yes cache_valid_time=604800
+
+        notify: start postgresql
+
+    handlers:
+
+      - name: start nginx
+
+        service: name=nginx enabled=yes state=started
+
+      - name: start postgresql
+
+        service: name=postgresql enabled=yes state=started
+
+...
+
+---
+
+  - name: Configuring Nginx
+
+    hosts: all
+
+    sudo: true
+
+    tasks:
+
+      - name: Install Nginx
+
+        apt: pkg=nginx state=present update_cache=yes cache_valid_time=604800
+
+      - name: Ensure Nginx is running
+
+        service: name=nginx enabled=yes state=started
+    
+  - name: Configuring PostgreSQL
+
+    hosts: all
+
+    sudo: true
+
+    tasks:   
+    
+      - name: Install PostgreSQL
+      
+        apt: pkg=postgresql state=present update_cache=yes cache_valid_time=604800
+
+      - name: Ensure PostgreSQL is running
+
+        service: name=postgresql enabled=yes state=started
+
+...
+
+
+---
+[back-end-and-infra:children]
+back-end-servers
+infrastructure
+
+[back-end-servers]
+database ansible_host=10.0.0.1 ansible_port=22 ansible_user=postgres
+webserver ansible_host=10.0.0.2 ansible_port=22 ansible_user=root
+
+[infrastructure]
+ldap ansible_host=10.0.0.100 ansible_port=22 ansible_user=root
+
+...
+-------------------------------------------
+#host variables
+
+[group1]
+
+host1 http_port=80 
+
+host2 http_port=303
+
+host3
+
+
+
+#group variables
+
+[group1:vars]
+
+ntp_server= example.com
+
+proxy=proxy.example.com
+---------------------------------

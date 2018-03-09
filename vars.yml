@@ -1,0 +1,136 @@
+---
+
+- name: list variables
+
+  hosts: all
+
+  vars:
+
+    foo:
+
+      - one
+
+      - two
+
+      - three
+
+  tasks:
+
+    - name: variable index 1
+
+      debug: msg="{{ foo[0] }}"
+
+    - name: variable index 3
+
+      debug: msg="{{ foo[2] }}"
+
+...
+
+---
+
+- hosts: all
+
+  vars_files:
+
+    - vars.yml
+
+  tasks:
+
+    - debug: msg="Variable 'var' is set to {{ var }}"
+...
+
+---
+
+var: 20
+
+...
+
+#clomplex
+
+---
+
+- name: complex variables
+
+  hosts: all
+
+  tasks:
+
+    - debug: var=ansible_eth0
+
+    - debug: msg="{{ ansible_eth0.ipv4.address }}"
+
+    - debug: msg="{{ ansible_eth0['ipv4']['address'] }}"
+    
+...    
+---------------------
+
+---
+
+- name: check registered variable for emptiness
+
+  hosts: all
+
+  tasks:
+
+    - name: list contents of the directory in the host 
+
+      command: ls /home/ubuntu
+
+      register: contents
+
+    - name: check dir is empty
+
+      debug: msg="Directory is empty"
+
+      when: contents.stdout == ""
+
+    - name: check dir has contents
+
+      debug: msg="Directory is not empty"
+
+      when: contents.stdout != ""
+...
+=========================================
+
+---
+
+- name: show return value of command module
+
+  hosts: all
+
+  tasks:
+
+    - name: creating folder
+
+      command: mkdir folder7
+
+      register: output
+
+    - debug: var=output
+...
+
+================================
+
+variable order: 
+Command Line > Playbook > Facts > Roles
+
+ansible host01 -i myhosts -m setup    ####Fact willreturn "Bochs"
+---------------
+#file: test.yml
+
+---
+
+- hosts: all
+
+  vars:
+
+    ansible_bios_version: Fresco
+
+  tasks:        
+
+    - debug: msg="Variable 'ansible_bios_version' is set to {{ ansible_bios_version }}"
+...
+## CLI
+
+ansible-playbook -i myhosts test.yml --extra-vars "ansible_bios_version=Ansible"
+====================

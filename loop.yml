@@ -1,0 +1,62 @@
+---
+- name: debian | ubuntu | add java ppa repo
+
+  apt_repository:
+
+    repo=ppa:webupd8team/java
+
+    state=present
+
+  become: yes
+
+  when: ansible_distribution == 'Ubuntu'
+
+
+
+- name: debian | ensure the webupd8 launchpad apt repository is present
+
+    apt_repository:
+
+      repo="{{ item }} http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main"
+
+      update_cache=yes
+
+      state=present
+
+    with_items:
+
+      - deb
+
+      - deb-src
+
+    become: yes
+
+
+
+  when: ansible_distribution == 'Debian'
+ ...
+ 
+ ==========================Another one =============
+ ---
+ 
+   - name: use loops
+   
+     hosts: all
+     
+     sudo: true
+     
+     tasks:
+     
+       - name: install base packages
+         
+         apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=604800
+         
+         with_items:
+         
+           - sysstat
+           
+           - apache2
+           
+           - git
+           
+...
