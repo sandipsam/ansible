@@ -28,6 +28,9 @@ ansible-playbook playbooks/PLAYBOOK_NAME.yml --limit 'all:!host1'
 
 ansible host01 -i myhosts -m setup
 
+
+export ANSIBLE_HOST_KEY_CHECKING=False
+ 
 ---------------------------
 
 ---
@@ -156,7 +159,9 @@ Defaults
 
 ------------------
 
-mkdir roles , cd roles , mkdir sample_role, cd sample_role, mkdir defaults files handlers tasks templates vars
+create sample role:    ansible-galaxy init sample_role
+
+mkdir roles , cd roles , mkdir sample_role, cd sample_role, mkdir defaults files handlers meta tasks templates tests vars
 
 #file: tasks/nginx.yml
 
